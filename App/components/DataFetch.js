@@ -7,7 +7,8 @@ import {
   TextInput,
   StatusBar,
   Image,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from "react-native";
 import { Button, Text } from "native-base";
 
@@ -16,7 +17,7 @@ export default class dataFetch extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      jokeData: ""
+      jokeData: []
     };
   }
 
@@ -29,11 +30,37 @@ export default class dataFetch extends React.Component {
       )
       .then(response => {
         console.log("response!", response);
-        this.setState({ jokeData: response }, () => {
+        this.setState({ jokeData: response.data }, () => {
           this.setState({ loading: false });
           console.log("successfully updated state!", this.state);
         });
       });
+  };
+
+  componentDidUpdate() {
+    console.log("Data Fetch did update", this.state);
+  }
+
+  handleDelete = eleId => {
+    Alert.alert(
+      "Warning",
+      "You can't get this funny back",
+      [
+        {
+          text: "Delete joke with ID " + eleId + " ?",
+          onPress: () =>
+            this.setState({
+              jokeData: this.state.jokeData.filter(ele => ele.id !== eleId)
+            })
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -48,15 +75,22 @@ export default class dataFetch extends React.Component {
 
         {this.state.loading ? <Text>Loading</Text> : undefined}
 
-        {!this.state.loading && this.state.jokeData.data !== undefined ? (
+        {!this.state.loading && this.state.jokeData.length > 0 ? (
           <View>
-            {this.state.jokeData.data.map((ele, index) => {
+            {this.state.jokeData.map((ele, index) => {
               return (
                 <View style={styles.jokeContainer}>
                   <Text>
                     {index + 1}: {ele.setup}
                   </Text>
                   <Text>{ele.punchline}</Text>
+                  <Button
+                    onPress={() => this.handleDelete(ele.id)}
+                    full
+                    style={styles.button}
+                  >
+                    <Text>Not funny, Delete</Text>
+                  </Button>
                 </View>
               );
             })}

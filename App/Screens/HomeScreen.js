@@ -20,7 +20,11 @@ export default class HomeScreen extends Component {
     return (
       <ScrollView>
         <View>
-          <Header title={"Welcome!"} />
+          <Header
+            title={"Welcome!"}
+            back={"LandingScreen"}
+            navigation={this.props.navigation}
+          />
           <View style={styles.container}>
             <Text style={styles.welcome}>Wanna hear a joke?</Text>
             <DataFetch />
