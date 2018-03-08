@@ -37,6 +37,16 @@ export default class dataFetch extends React.Component {
       });
   };
 
+  async fetchData() {
+    console.log("inside");
+    let response = await axios.get(
+      "https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_ten"
+    );
+    this.setState({ jokeData: response }, () => {
+      console.log("data fetched with async", this.state);
+    });
+  }
+
   componentDidUpdate() {
     console.log("Data Fetch did update", this.state);
   }

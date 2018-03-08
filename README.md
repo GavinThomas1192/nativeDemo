@@ -1,5 +1,9 @@
 ## To get started...
 
+## https://facebook.github.io/react-native/docs/getting-started.html
+
+#### After installing react-native cli...
+
 * git clone this repository
 * cd into directory
 * `npm install`
